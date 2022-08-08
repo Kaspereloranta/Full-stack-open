@@ -1,0 +1,4 @@
+
+
+selain->palvelin: HTTP Post https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+palvelin-->selain: created, statuskoodi 201
