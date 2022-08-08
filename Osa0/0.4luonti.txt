@@ -1,0 +1,22 @@
+
+selain-palvelin HTTP POST httpsstudies.cs.helsinki.fiexampleappnew_note
+palvelin--selain redirectaus, statuskoodi 302
+selain-palvelin HTTP GET httpsstudies.cs.helsinki.fiexampleappnotes
+palvelin--selain HTML-koodi
+selain-palvelin HTTP GET httpsstudies.cs.helsinki.fiexampleappmain.css
+palvelin--selain main.css
+selain-palvelin HTTP GET httpsstudies.cs.helsinki.fiexampleappmain.js
+palvelin--selain main.js
+
+note over selain
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain-palvelin HTTP GET httpsstudies.cs.helsinki.fiexampleappdata.json
+palvelin--selain [{ content HTML on helppoa, date 2019-01-01 }, ...]
+
+note over selain
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end notetesti
