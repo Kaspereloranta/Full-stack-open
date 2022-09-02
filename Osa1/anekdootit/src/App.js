@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 const Button = (props) => { 
   const { handleClick, text } = props
+
   return (
     <button onClick={handleClick}>
       {text}
@@ -19,8 +20,9 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.'
   ]
-   
+  
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Uint8Array(7))
 
   const getRandomInt = (max) => Math.floor(Math.random()*max)
 
@@ -28,10 +30,19 @@ const App = () => {
     setSelected(getRandomInt(7))
   }
 
+  const handleVote = () => {
+    const pointsCopy = [...points]
+    pointsCopy[selected] += 1
+    setPoints(pointsCopy)
+  }
+
+
   return (
     <div>
       <p> {anecdotes[selected]}  </p>
-      <p> <Button handleClick={handleClick} text="next anecdote" /> </p>
+      <p> 
+      <Button handleClick={handleVote} text="vote"/>
+      <Button handleClick={handleClick} text="next anecdote" /> </p>
     </div>
   )
 }
