@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 const Header = (props) => {
-  console.log(props)
   return (
     <div>
       <p>
@@ -14,7 +13,6 @@ const Header = (props) => {
 const Display = ({ counter }) => <div>{counter}</div>
 
 const Button = (props) => { 
-  console.log(props)
   const { handleClick, text } = props
   return (
     <button onClick={handleClick}>
@@ -33,40 +31,45 @@ const Statistics = (props) => {
   }
   return(
     <div>
-    <StatisticsLine  text="good" value = {props.good}/>
-    <StatisticsLine  text="neutral" value = {props.neutral}/>
-    <StatisticsLine  text="bad" value = {props.bad}/>
-    <StatisticsLine  text="all" value = {props.allClicks}/>
-    <StatisticsLine  text="average" good = {props.good} bad = {props.bad} neutral = {props.neutral}/>
-    <StatisticsLine  text="good" good = {props.good} bad = {props.bad} neutral = {props.neutral} percent = {1}/>
+    <table>
+      <tbody>
+        <StatisticsLine  text="good" value = {props.good}/> 
+        <StatisticsLine  text="neutral" value = {props.neutral}/> 
+        <StatisticsLine  text="bad" value = {props.bad}/> 
+        <StatisticsLine  text="all" value = {props.allClicks}/> 
+        <StatisticsLine  text="average" good = {props.good} bad = {props.bad} neutral = {props.neutral}/>
+        <StatisticsLine  text="good" good = {props.good} bad = {props.bad} neutral = {props.neutral} percent = {1}/> 
+     </tbody>
+    </table> 
     </div>
   )
 
 }
 
 const StatisticsLine = (props) => {
-  if(props.allClicks === 0) {
+
+  if(props.text === "average") {
     return(
-      <div>
-        <p>No feedback given</p>
-      </div>
-    )
-  }
-  else if(props.text === "average") {
-    return(
-      <p>{props.text} {(props.good-props.bad)/(props.good+props.bad+props.neutral)} </p>
+      <tr>
+        <td>{props.text} </td>    
+        <td> {(props.good-props.bad)/(props.good+props.bad+props.neutral)}</td>
+      </tr>
     )
   }
   else if(props.text === "good" && props.percent === 1){
     return(
-      <p>good {(props.good)/(props.good+props.bad+props.neutral)*100} % </p>
+      <tr>
+        <td> {props.text} </td>
+        <td> {(props.good)/(props.good+props.bad+props.neutral)*100} % </td>
+      </tr>      
     )
   }
   else{
   return (
-  <div> 
-  <p>{props.text} {props.value} </p>
-  </div>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
   )
   }
 }
