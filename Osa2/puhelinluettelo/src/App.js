@@ -17,12 +17,17 @@ const App = () => {
     const NumberObject = {
       name: newName
     }
-    setPersons(persons.concat(NumberObject))
-    setNewName('')
+
+    if((persons.map(person => person.name)).includes(newName)){
+      alert(newName + " is already added to phonebook")
+    }
+    else{
+      setPersons(persons.concat(NumberObject))
+      setNewName('')
+    }
   }
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -40,7 +45,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
       {persons.map(person => 
-          <Number key={person.id} person={person}></Number>)}
+          <Number key={person.name} person={person}></Number>)}
       </ul>
       <Number person={persons}></Number>
     </div>
@@ -50,4 +55,4 @@ const App = () => {
 
 export default App
 
-/* 5.9 aikaa kulunut osa2: */
+/* 5.9 aikaa kulunut osa2: 4,5 h */
