@@ -1,12 +1,40 @@
 import { useState } from 'react'
 
 const Number=(props) => {
-  console.log((props.person.name).toLowerCase().includes(props.filter.toLowerCase()))
    if((props.person.name).toLowerCase().includes(props.filter.toLowerCase())){
     return(
       <p>{props.person.name} {props.person.number}</p>
     ) 
    }
+}
+
+const Numbers=(props) => {
+  return(
+    <ul>
+      {props.persons.map(person => 
+          <Number key={person.name} person={person} filter={props.filter}></Number>)}
+    </ul>
+  )
+}
+
+const PersonForm=(props) => {
+  return(
+    <form onSubmit={props.addNumber}>
+            <div>
+              name: <input value={props.newName} onChange={props.handleNameChange}  />
+            </div>
+            <div>number: <input value={props.newNumber} onChange={props.handleNumberChange}/></div>
+            <div>
+              <button type="submit">add</button>
+            </div>
+          </form>
+  )
+}
+
+const FilterForm=(props) => {
+  return(
+    <div>filter shown with <input value={props.filter} onChange={props.handleFilter}></input></div>
+  )
 }
 
 const App = () => {
@@ -33,7 +61,6 @@ const App = () => {
     }
     else{
       setPersons(persons.concat(PersonObject))
-      console.log(persons[2])
       setNewName('')
       setNewNumber('')   
     }
@@ -48,7 +75,6 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  
   const handleFilter = (event) => {
     setFilter(event.target.value)
   }
@@ -56,25 +82,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
-      <div>filter shown with <input value={filter} onChange={handleFilter}></input></div>
-
-      <form onSubmit={addNumber}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}  />
-        </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-
-      <h2>Numbers</h2>
-      <ul>
-      {persons.map(person => 
-          <Number key={person.name} person={person} filter={filter}></Number>)}
-      </ul>
+      
+      <FilterForm filter={filter} handleFilter={handleFilter}></FilterForm>
+      
+      <PersonForm newName={newName} newNumber={newNumber} 
+      handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
+      addNumber={addNumber}></PersonForm>
+     
+      <h2>Numbers</h2>    
+      <Numbers persons={persons} filter={filter}></Numbers>
     </div>
   )
 
