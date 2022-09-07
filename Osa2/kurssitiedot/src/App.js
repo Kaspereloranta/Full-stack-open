@@ -55,3 +55,6 @@ const App = () => {
 }
 
 export default App
+
+/*
+osa2 4.9 mennessä 3h, a-osa done */

@@ -98,4 +98,7 @@ const App = () => {
 
 export default App
 
-/* 5.9 aikaa kulunut osa2: 4,5 h */
+/* 6.9 aikaa kulunut osa2: 8,5 h
+
+18.35 aloitus
+*/
