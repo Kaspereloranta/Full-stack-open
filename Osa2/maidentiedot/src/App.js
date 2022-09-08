@@ -3,13 +3,27 @@ import axios from 'axios'
 import './App.css';
 import { useState, useEffect } from 'react';
 
+const CountryDetails=(props)=>{
+  console.log(props.country.languages)
+
+  const lngs = props.country.map(language => language.value)
+  console.log(lngs)
+  return(
+    <div>
+    <h1>{props.country.name.common}</h1>
+    <p>{props.country.capital}</p>
+    <p>{props.country.area}</p>
+    <b>languages:</b> 
+    <ul>
+      {/*props.country.languages.map(language => language.value)*/}
+    </ul>
+    <br></br><img src={props.country.flags.png}></img>    
+    </div>
+  )
+}
+
 const Country=(props)=> {
-  if(props.filter==='' || props.filter===' '){
-    return(
-      <p></p>
-    )
-  }
-  else if((props.country.name.common).toLowerCase().includes(props.filter.toLowerCase())){
+  if((props.country.name.common).toLowerCase().includes(props.filter.toLowerCase())){
     return(
       <p>{props.country.name.common}</p>
     ) 
@@ -17,16 +31,32 @@ const Country=(props)=> {
 }
 
 const Countries=(props) => {
+    
+  const countries = props.countries.map(country => country.name.common.toLowerCase()
+  .includes(props.filter.toLowerCase()) ? country.name.common : null).filter(country => {
+    return country != null
+  })
 
-  const countries2 = props.countries.map(country=>
-    <Country key={country.name.common} country={country} filter={props.filter}></Country>)
+  if(countries.length > 10 ){
+    return(
+      <p>Too many matches, specify another filter</p>
+    )
+  }
 
-  return(
-    <ul>
+  else if(countries.length===1){
+    return(
+      <CountryDetails country = {props.countries[1]}></CountryDetails> // tänne miten haetaan indeksi
+    )
+  }
+  
+  else {
+    return(
+      <ul>
       {props.countries.map(country=>
         <Country key={country.name.common} country={country} filter={props.filter}></Country>)}
     </ul>
-  )
+    )
+  }
 }
 
 const App = () => {
