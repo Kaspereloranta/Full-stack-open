@@ -4,19 +4,14 @@ import './App.css';
 import { useState, useEffect } from 'react';
 
 const CountryDetails=(props)=>{
-  console.log(props.country.languages)
-
-  const lngs = props.country.map(language => language.value)
-  console.log(lngs)
+  let lngs = Object.values(props.country.languages)
   return(
     <div>
     <h1>{props.country.name.common}</h1>
     <p>{props.country.capital}</p>
     <p>{props.country.area}</p>
     <b>languages:</b> 
-    <ul>
-      {/*props.country.languages.map(language => language.value)*/}
-    </ul>
+    <ul>{lngs.map(lng=><li key={lng}>{lng}</li>)}</ul> 
     <br></br><img src={props.country.flags.png}></img>    
     </div>
   )
@@ -44,8 +39,12 @@ const Countries=(props) => {
   }
 
   else if(countries.length===1){
+    const index = props.countries.findIndex(object => {
+      return object.name.common === countries[0];
+    });
+
     return(
-      <CountryDetails country = {props.countries[1]}></CountryDetails> // tänne miten haetaan indeksi
+      <CountryDetails country = {props.countries[index]}></CountryDetails> // tänne miten haetaan indeksi
     )
   }
   
@@ -90,3 +89,5 @@ const App = () => {
 
 export default App;
 
+// 8.9 aikaa kulunut 11,5 h 
+// 9.9 alotuys klo 9
