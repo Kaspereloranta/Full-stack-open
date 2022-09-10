@@ -67,6 +67,9 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     }
     else{
+      axios
+        .post('http://localhost:3001/persons',PersonObject)
+        .then(response=>{console.log(response)})
       setPersons(persons.concat(PersonObject))
       setNewName('')
       setNewNumber('')   
@@ -109,3 +112,6 @@ export default App
 
 18.35 aloitus
 */
+
+// aikaa kulunut 11,5h
+/* 10.9 alotus 13.30 */
