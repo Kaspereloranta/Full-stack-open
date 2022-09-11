@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
 import Notification from './components/Notification'
+import Error from './components/Error'
+
 
 const Number=(props) => {
    if((props.person.name).toLowerCase().includes(props.filter.toLowerCase())){
@@ -57,7 +59,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
 
   const addNumber = (event) => {
@@ -86,6 +89,14 @@ const App = () => {
           setTimeout(()=>{
             setNotification(null)
           },5000)
+        })
+        .catch(error=>{
+          setError("Information of " + persons.find(person => person.id === updatePerson.id).name + " has already been remover from server")
+          setTimeout(()=>{
+            setError(null)
+          },5000)
+          setNewName('')
+          setNewNumber('')   
         }) 
       }
     }
@@ -122,17 +133,22 @@ const App = () => {
   const deletePerson = (id) =>{
     const deleter = () => {
         if (window.confirm("Delete " + persons.find(person => person.id === id).name + "?")){      
-          setNotification("Deleted " + persons.find(person => person.id === id).name)
-          setTimeout(()=>{
-            setNotification(null)
-          },5000)
           personService
             .erase(id)
             .then(response => {
               setPersons(persons.filter(person => person.id !== id))
+              setNotification("Deleted " + persons.find(person => person.id === id).name)
+              setTimeout(()=>{
+                setNotification(null)
+              },5000)
             })
-            .catch(error => {
-              console.log('fail')
+            .catch(error=>{
+              setError("Information of " + persons.find(person => person.id === id).name + " has already been removed from server")
+              setTimeout(()=>{
+                setError(null)
+              },5000)
+              setNewName('')
+              setNewNumber('')   
             }) 
          }
     }
@@ -144,7 +160,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <Notification message={notification}></Notification>
-
+      <Error message={error}> </Error>
 
       <FilterForm filter={filter} handleFilter={handleFilter}></FilterForm>
       
