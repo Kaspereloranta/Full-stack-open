@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
-
+import Notification from './components/Notification'
 
 const Number=(props) => {
    if((props.person.name).toLowerCase().includes(props.filter.toLowerCase())){
@@ -57,6 +57,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState('')
+
 
   const addNumber = (event) => {
     event.preventDefault()
@@ -78,7 +80,12 @@ const App = () => {
         .then(response => {
           console.log(response.data)
           setPersons(persons.map(person => person.id !== updatePerson.id ? person : response.data) )
-          
+          setNotification("Edited " + persons.find(person => person.id === updatePerson.id).name + "'s number")
+          setNewName('')
+          setNewNumber('')   
+          setTimeout(()=>{
+            setNotification(null)
+          },5000)
         }) 
       }
     }
@@ -91,6 +98,10 @@ const App = () => {
       })
       setNewName('')
       setNewNumber('')   
+      setNotification("Added " + PersonObject.name)
+      setTimeout(()=>{
+        setNotification(null)
+      },5000)
     }
   }
 
@@ -111,6 +122,10 @@ const App = () => {
   const deletePerson = (id) =>{
     const deleter = () => {
         if (window.confirm("Delete " + persons.find(person => person.id === id).name + "?")){      
+          setNotification("Deleted " + persons.find(person => person.id === id).name)
+          setTimeout(()=>{
+            setNotification(null)
+          },5000)
           personService
             .erase(id)
             .then(response => {
@@ -127,15 +142,17 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      
+      <h1>Phonebook</h1>
+      <Notification message={notification}></Notification>
+
+
       <FilterForm filter={filter} handleFilter={handleFilter}></FilterForm>
       
       <PersonForm newName={newName} newNumber={newNumber} 
       handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
       addNumber={addNumber}></PersonForm>
      
-      <h2>Numbers</h2>    
+      <h1>Numbers</h1>    
       <Numbers persons={persons} filter={filter} deletePerson={deletePerson}></Numbers>
     </div>
   )
@@ -144,17 +161,9 @@ const App = () => {
 
 export default App
 
-/* 6.9 aikaa kulunut osa2: 8,5 h
 
-18.35 aloitus
-*/
-
-// aikaa kulunut 14h
-/* 10.9 alotus 13.30 */
-
-
-/*11.9 alotius klo 18.45 -> 
-
+// aikaa kulunut 14,25 h 11.9 mennessä 
+/*
 {
   "persons": [
     { 
