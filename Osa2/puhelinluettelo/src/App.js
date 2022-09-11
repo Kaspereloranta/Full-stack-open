@@ -66,8 +66,23 @@ const App = () => {
     }
 
     if((persons.map(person => person.name)).includes(newName)){
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(newName + " is already added to phonebook, replace the old number with a new one?")){
+        const updatePerson = {
+          name: newName,
+          number: newNumber,
+          id: persons.find(person => person.name === newName).id
+        } 
+        console.log(updatePerson)
+        personService
+        .update(updatePerson.id, updatePerson)
+        .then(response => {
+          console.log(response.data)
+          setPersons(persons.map(person => person.id !== updatePerson.id ? person : response.data) )
+          
+        }) 
+      }
     }
+       
     else{
       personService
       .create(PersonObject)
@@ -134,11 +149,11 @@ export default App
 18.35 aloitus
 */
 
-// aikaa kulunut 11,5h
+// aikaa kulunut 14h
 /* 10.9 alotus 13.30 */
 
 
-/*11.9 alotius klo 13
+/*11.9 alotius klo 18.45 -> 
 
 {
   "persons": [
