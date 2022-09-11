@@ -5,8 +5,8 @@ import personService from './services/persons'
 const Number=(props) => {
    if((props.person.name).toLowerCase().includes(props.filter.toLowerCase())){
     return(
-      <p key={props.person.name}>{props.person.name} {props.person.number}    
-         <button key={props.person.number} onClick={props.deletePerson(props.person.id)}> delete </button> </p>
+      <p >{props.person.name} {props.person.number}    
+         <button  onClick={props.deletePerson(props.person.id)}> delete </button> </p>
     ) 
    }
 }
@@ -90,23 +90,16 @@ const App = () => {
 
   const handleFilter = (event) => {
     setFilter(event.target.value)
-    console.log(persons)
+
   }
   
   const deletePerson = (id) =>{
     const deleter = () => {
-        console.log(id)
-        console.log(persons[id-1].name)
-        if (window.confirm("Delete " + persons[id-1].name + "?")){      
-           console.log("poista" + id)
-           personService
+        if (window.confirm("Delete " + persons.find(person => person.id === id).name + "?")){      
+          personService
             .erase(id)
             .then(response => {
-              console.log("tämä on response data" + response.data)
               setPersons(persons.filter(person => person.id !== id))
-            //  setPersons(persons.map( person => Object.assign({}, person, {id:persons.indexOf(person)})))
-              console.log("poistettu")
-              console.log(persons)
             })
             .catch(error => {
               console.log('fail')
