@@ -1,54 +1,24 @@
 {
   "persons": [
-    {
-      "name": "Arto Hellas",
+    { 
+      "name": "Arto Hellas", 
       "number": "040-123456",
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
+      "name": "Ada Lovelace", 
       "number": "39-44-5323523",
       "id": 2
     },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+    { 
+      "name": "Dan Abramov", 
+      "number": "12-43-234345", 
       "id": 3
     },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Kasper Eloranta",
-      "number": "0445666828",
-      "id": 5
-    },
-    {
-      "name": "Eeva Koivulahti",
-      "number": "0445677822",
-      "id": 6
-    },
-    {
-      "name": "Veeti Eloranta",
-      "number": "0447345572643",
-      "id": 7
-    },
-    {
-      "name": "Aino Koivulahti",
-      "number": "040453489",
-      "id": 8
-    },
-    {
-      "name": "Konsta Eloranta",
-      "number": "0235135",
-      "id": 9
-    },
-    {
-      "name": "Jaska Jokunen",
-      "number": "0501234567",
-      "id": 10
+    { 
+    "name": "Mary Poppendieck",
+    "number": "39-23-6423122",
+    "id": 4
     }
   ]
 }

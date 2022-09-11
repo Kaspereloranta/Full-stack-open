@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 
 const Number=(props) => {
    if((props.person.name).toLowerCase().includes(props.filter.toLowerCase())){
     return(
-      <p>{props.person.name} {props.person.number}</p>
+      <p key={props.person.name}>{props.person.name} {props.person.number}    
+         <button key={props.person.number} onClick={props.deletePerson(props.person.id)}> delete </button> </p>
     ) 
    }
 }
 
 const Numbers=(props) => {
   return(
-    <ul>
-      {props.persons.map(person => 
-          <Number key={person.name} person={person} filter={props.filter}></Number>)}
-    </ul>
+    <ul> 
+    {props.persons.map(person => 
+          <Number key={person.id} person={person} filter={props.filter} 
+           deletePerson={props.deletePerson}></Number>)}
+    </ul>  
   )
 }
 
@@ -89,6 +90,31 @@ const App = () => {
 
   const handleFilter = (event) => {
     setFilter(event.target.value)
+    console.log(persons)
+  }
+  
+  const deletePerson = (id) =>{
+    const deleter = () => {
+        console.log(id)
+        console.log(persons[id-1].name)
+        if (window.confirm("Delete " + persons[id-1].name + "?")){      
+           console.log("poista" + id)
+           personService
+            .erase(id)
+            .then(response => {
+              console.log("tämä on response data" + response.data)
+              setPersons(persons.filter(person => person.id !== id))
+            //  setPersons(persons.map( person => Object.assign({}, person, {id:persons.indexOf(person)})))
+              console.log("poistettu")
+              console.log(persons)
+            })
+            .catch(error => {
+              console.log('fail')
+            }) 
+         }
+    }
+    
+    return deleter  
   }
 
   return (
@@ -102,7 +128,7 @@ const App = () => {
       addNumber={addNumber}></PersonForm>
      
       <h2>Numbers</h2>    
-      <Numbers persons={persons} filter={filter}></Numbers>
+      <Numbers persons={persons} filter={filter} deletePerson={deletePerson}></Numbers>
     </div>
   )
 
@@ -117,3 +143,34 @@ export default App
 
 // aikaa kulunut 11,5h
 /* 10.9 alotus 13.30 */
+
+
+/*11.9 alotius klo 13
+
+{
+  "persons": [
+    { 
+      "name": "Arto Hellas", 
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    { 
+      "name": "Dan Abramov", 
+      "number": "12-43-234345", 
+      "id": 3
+    },
+    { 
+    "name": "Mary Poppendieck",
+    "number": "39-23-6423122",
+    "id": 4
+    }
+  ]
+}
+    
+    
+    */
