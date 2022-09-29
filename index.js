@@ -37,6 +37,10 @@ app.get('/api/persons', (req, res) => {
 })
 
 
+app.get('/info', (req, res) => {
+    res.send(`Phonebook has info for ${persons.length} people.<br/>${Date()}`);
+    })
+
 /*
 app.get('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id)
