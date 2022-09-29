@@ -1,6 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+var mrgn = morgan('tiny')
+app.use(mrgn)
 
 
     let persons = [
@@ -65,7 +68,6 @@ function generateId() {
   
 app.post('/api/persons', (request, response) => {
     const body = request.body
-  
     if (!body.name) {
       return response.status(400).json({ 
         error: 'name missing' 
@@ -96,4 +98,8 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
   })
 
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
   
+  app.use(unknownEndpoint)
