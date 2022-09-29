@@ -58,15 +58,12 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
-/*
-const generateId = () => {
-    const maxId = notes.length > 0
-      ? Math.max(...notes.map(n => n.id))
-      : 0
-    return maxId + 1
+
+function generateId() {
+    return Math.floor(Math.random() * 1000);
   }
   
-  app.post('/api/notes', (request, response) => {
+app.post('/api/persons', (request, response) => {
     const body = request.body
   
     if (!body.content) {
@@ -75,16 +72,15 @@ const generateId = () => {
       })
     }
   
-    const note = {
-      content: body.content,
-      important: body.important || false,
-      date: new Date(),
+    const person = {
+      name: body.name,
+      number: body.number ,
       id: generateId(),
     }
   
-    notes = notes.concat(note)
-  
-    response.json(note)
+    persons = persons.concat(person)
+    console.log(person)
+    response.json(person)
   })
 
-  */
+  
