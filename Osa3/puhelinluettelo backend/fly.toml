@@ -1,6 +1,6 @@
-# fly.toml file generated for testi on 2022-10-05T15:41:19+03:00
+# fly.toml file generated for damp-cherry-4709 on 2022-10-07T10:15:48+03:00
 
-app = "testi"
+app = "damp-cherry-4709"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
