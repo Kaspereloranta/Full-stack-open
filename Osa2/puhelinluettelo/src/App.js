@@ -91,7 +91,7 @@ const App = () => {
           },5000)
         })
         .catch(error=>{
-          setError("Information of " + persons.find(person => person.id === updatePerson.id).name + " has already been remover from server")
+          setError("Information of " + persons.find(person => person.id === updatePerson.id).name + " has already been removed from server")
           setTimeout(()=>{
             setError(null)
           },5000)
@@ -106,6 +106,13 @@ const App = () => {
       .create(PersonObject)
       .then(response => {
         setPersons(persons.concat(response.data))
+        setNotification("Added " + PersonObject.name)
+      })
+      .catch(error=>{
+        setError("Invalid input")
+        setTimeout(()=>{
+          setError(null)
+        },5000)
       })
       setNewName('')
       setNewNumber('')   
