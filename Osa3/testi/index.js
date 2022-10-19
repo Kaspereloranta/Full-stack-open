@@ -81,6 +81,6 @@ const generateId = () => {
     }
   
     notes = notes.concat(note)
-  
+    console.log("MORO")
     response.json(note)
   })
