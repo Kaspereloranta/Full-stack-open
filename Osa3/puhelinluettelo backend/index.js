@@ -1,10 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 app.use(express.json())
 const cors = require('cors')
 app.use(cors())
 app.use(express.static('build'))
-
+const Person = require('./models/person')
 
 let persons = [
     { 
@@ -34,11 +35,22 @@ let persons = [
     }
   ]
 
-
+// ylhäältä
+/*
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
+*/
 
+// mongoDB
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
+})
+
+//ylhäältä
+/*
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
@@ -48,6 +60,13 @@ app.get('/api/persons/:id', (request, response) => {
       response.status(404).end()
     }
   })
+*/
+//mongoDB
+app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id).then(person => {
+    response.json(person)
+  })
+})
 
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
