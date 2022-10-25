@@ -87,6 +87,34 @@ const generateId = () => {
     return maxId + 1
   }
   
+  //mongodb
+  app.post('/api/persons', (request, response) => {
+    const body = request.body
+  
+    if (!body.name) {
+      return response.status(400).json({ 
+        error: 'name missing' 
+      })
+    }
+    if(!body.number){
+      return response.status(400).json({ 
+        error: 'number missing' 
+      })
+    }
+  
+    const person = new Person({
+      name: body.name,
+      number: body.number, 
+      id: generateId(),
+    })
+  
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
+    })
+  })
+
+  // vanha
+  /*
   app.post('/api/persons', (request, response) => {
     const body = request.body
     if (!body.name) {
@@ -105,6 +133,7 @@ const generateId = () => {
       id: generateId(),
     }
     persons = persons.concat(person)
-  
+    
     response.json(person)
   })
+  */
