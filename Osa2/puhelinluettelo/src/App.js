@@ -109,14 +109,13 @@ const App = () => {
         setNotification("Added " + PersonObject.name)
       })
       .catch(error=>{
-        setError("Invalid input")
+        setError(error.response.data.error)
         setTimeout(()=>{
           setError(null)
         },5000)
       })
       setNewName('')
       setNewNumber('')   
-      setNotification("Added " + PersonObject.name)
       setTimeout(()=>{
         setNotification(null)
       },5000)

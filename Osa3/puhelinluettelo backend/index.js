@@ -49,6 +49,12 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
+app.get('/info', (req, res) => {
+    Person.find({}).then(persons => {
+      res.send(`Phonebook has info for ${persons.length} people.<br/>${Date()}`);
+    })
+  })
+
 //ylhäältä
 /*
 app.get('/api/persons/:id', (request, response) => {
@@ -109,17 +115,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  }
-
-  next(error)
-}
-
-app.use(errorHandler)
 
 
 const PORT = process.env.PORT || 3001
@@ -135,7 +130,7 @@ const generateId = () => {
   }
   
   //mongodb
-  app.post('/api/persons', (request, response) => {
+  app.post('/api/persons', (request, response, next) => {
     const body = request.body
   
     if (!body.name) {
@@ -158,6 +153,7 @@ const generateId = () => {
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
+    .catch(error => next(error))
   })
 
   // vanha
@@ -184,3 +180,17 @@ const generateId = () => {
     response.json(person)
   })
   */
+
+  const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+  
+    if (error.name === 'CastError') {
+      return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+      return response.status(400).json({ error: error.message })
+    }
+  
+    next(error)
+  }
+  
+  app.use(errorHandler)
