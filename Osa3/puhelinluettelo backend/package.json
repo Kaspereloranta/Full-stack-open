@@ -8,9 +8,10 @@
     "dev": "nodemon index.js",
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
     "build:ui": "rm -rf build && cd ../../Osa2/puhelinluettelo && npm run build && cp -r build ../'puhelinluettelo backend'",
-    "build" : "",
+    "build": "",
     "deploy": "flyctl deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
+    "lint": "eslint .",
     "logs:prod": "flyctl logs"
   },
   "repository": {
@@ -30,6 +31,7 @@
     "mongoose": "^6.7.0"
   },
   "devDependencies": {
+    "eslint": "^8.26.0",
     "nodemon": "^2.0.20"
   }
 }
