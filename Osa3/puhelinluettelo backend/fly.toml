@@ -1,12 +1,9 @@
-# fly.toml file generated for damp-cherry-4709 on 2022-10-07T10:15:48+03:00
+# fly.toml file generated for patient-glitter-1549 on 2022-10-26T16:18:36+03:00
 
-app = "damp-cherry-4709"
+app = "patient-glitter-1549"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
-
-[build]
-  builder = "heroku/buildpacks:20"
 
 [env]
   PORT = "8080"

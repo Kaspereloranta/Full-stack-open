@@ -115,13 +115,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-
-
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
-
 const generateId = () => {
     const maxId = persons.length > 0
       ? Math.max(...persons.map(n => n.id))
@@ -194,3 +187,8 @@ const generateId = () => {
   }
   
   app.use(errorHandler)
+
+  const PORT = process.env.PORT || 3001
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
