@@ -5,9 +5,9 @@ import Error from './components/Error'
 
 
 const Number=(props) => {
-   if((props.blog.name).toLowerCase().includes(props.filter.toLowerCase())){
+   if((props.blog.title).toLowerCase().includes(props.filter.toLowerCase())){
     return(
-      <p >{props.blog.name} {props.blog.number}    
+      <p >{props.blog.title} {props.blog.author} {props.blog.url} {props.blog.likes}   
          <button  onClick={props.deleteBlog(props.blog.id)}> delete </button> </p>
     ) 
    }
@@ -30,6 +30,9 @@ const BlogForm=(props) => {
               name: <input value={props.newName} onChange={props.handleNameChange}  />
             </div>
             <div>author: <input value={props.newNumber} onChange={props.handleNumberChange}/></div>
+            <div>URL: <input value={props.newUrl} onChange={props.handleUrlChange}/></div>
+            <div>Likes: <input value={props.newLikes} onChange={props.handleLikesChange}/></div>
+
             <div>
               <button type="submit">add</button>
             </div>
@@ -58,6 +61,8 @@ const App = () => {
 
   const [newName, setNewName] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
+  const [newLikes, setNewLikes] = useState('')
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState(null)
   const [error, setError] = useState(null)
@@ -66,16 +71,18 @@ const App = () => {
   const addNumber = (event) => {
     event.preventDefault()
     const BlogObject = {
-      name: newName,
-      author: newAuthor
+      title: newName,
+      author: newAuthor,
+      url: newUrl,
+      likes: newLikes
     }
 
-    if((blogs.map(blog => blog.name)).includes(newName)){
+    if((blogs.map(blog => blog.title)).includes(newName)){
       if(window.confirm(newName + " is already added to phonebook, replace the old number with a new one?")){
         const updateBlog = {
-          name: newName,
+          title: newName,
           author: newAuthor,
-          id: blogs.find(blog => blog.name === newName).id
+          id: blogs.find(blog => blog.title === newName).id
         } 
         console.log(updateBlog)
         blogService
@@ -83,7 +90,7 @@ const App = () => {
         .then(response => {
           console.log(response.data)
           setBlogs(blogs.map(blog => blog.id !== updateBlog.id ? blog : response.data) )
-          setNotification("Edited " + blogs.find(blog => blog.id === updateBlog.id).name + "'s number")
+          setNotification("Edited " + blogs.find(blog => blog.id === updateBlog.id).title + "'s number")
           setNewName('')
           setNewAuthor('')   
           setTimeout(()=>{
@@ -91,7 +98,7 @@ const App = () => {
           },5000)
         })
         .catch(error=>{
-          setError("Information of " + blogs.find(blog => blog.id === updateBlog.id).name + " has already been removed from server")
+          setError("Information of " + blogs.find(blog => blog.id === updateBlog.id).title + " has already been removed from server")
           setTimeout(()=>{
             setError(null)
           },5000)
@@ -106,7 +113,7 @@ const App = () => {
       .create(BlogObject)
       .then(response => {
         setBlogs(blogs.concat(response.data))
-        setNotification("Added " + BlogObject.name)
+        setNotification("Added " + BlogObject.title)
       })
       .catch(error=>{
         setError(error.response.data.error)
@@ -124,12 +131,20 @@ const App = () => {
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
-    console.log(newName)
   }
 
   const handleNumberChange = (event) => {
     setNewAuthor(event.target.value)
-    console.log(newAuthor)
+  }
+
+  const handleUrlChange = (event) => {
+    setNewUrl(event.target.value)
+    console.log(newUrl)
+  }
+
+  const handleLikesChange = (event) => {
+    setNewLikes(event.target.value)
+    console.log(newLikes)
   }
 
   const handleFilter = (event) => {
@@ -139,18 +154,18 @@ const App = () => {
   
   const deleteBlog = (id) =>{
     const deleter = () => {
-        if (window.confirm("Delete " + blogs.find(blog => blog.id === id).name + "?")){      
+        if (window.confirm("Delete " + blogs.find(blog => blog.id === id).title + "?")){      
           blogService
             .erase(id)
             .then(response => {
               setBlogs(blogs.filter(blog => blog.id !== id))
-              setNotification("Deleted " + blogs.find(blog => blog.id === id).name)
+              setNotification("Deleted " + blogs.find(blog => blog.id === id).title)
               setTimeout(()=>{
                 setNotification(null)
               },5000)
             })
             .catch(error=>{
-              setError("Information of " + blogs.find(blog => blog.id === id).name + " has already been removed from server")
+              setError("Information of " + blogs.find(blog => blog.id === id).title + " has already been removed from server")
               setTimeout(()=>{
                 setError(null)
               },5000)
@@ -171,8 +186,9 @@ const App = () => {
 
       <FilterForm filter={filter} handleFilter={handleFilter}></FilterForm>
       
-      <BlogForm newName={newName} newAuthor={newAuthor} 
+      <BlogForm newName={newName} newAuthor={newAuthor} newUrl={newUrl} newLikes={newLikes}
       handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
+      handleUrlChange={handleUrlChange} handleLikesChange={handleLikesChange}
       addNumber={addNumber}></BlogForm>
      
       <h1>Blogs</h1>    
@@ -183,34 +199,3 @@ const App = () => {
 }
 
 export default App
-
-
-// aikaa kulunut 14,25 h 11.9 mennessä 
-/*
-{
-  "persons": [
-    { 
-      "name": "Arto Hellas", 
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    { 
-      "name": "Dan Abramov", 
-      "number": "12-43-234345", 
-      "id": 3
-    },
-    { 
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
-    }
-  ]
-}
-    
-    
-    */
