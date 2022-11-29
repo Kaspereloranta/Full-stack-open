@@ -5,12 +5,14 @@ if (process.argv.length<3) {
   process.exit(1)
 }
 
+
 const password = process.argv[2]
 
-const mongoUrl =
-  `mongodb+srv://fullstack:${password}@cluster0.o1opl.mongodb.net/blogList?retryWrites=true&w=majority`
+const mongoUrl = 'mongodb+srv://KasperE:${password}@fso-kaspere.hiulzq5.mongodb.net/blogList?retryWrites=true&w=majority'
 
 mongoose.connect(mongoUrl)
+console.log(mongoUrl)
+
 
 const blogSchema = mongoose.Schema({
   title: String,
@@ -18,14 +20,6 @@ const blogSchema = mongoose.Schema({
   url: String,
   likes: Number
 })
-
-blogSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
-    }
-  })
 
 const Blog = mongoose.model('Blog', blogSchema)
 
