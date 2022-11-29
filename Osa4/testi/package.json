@@ -1,0 +1,33 @@
+{
+  "name": "notebackend",
+  "version": "1.0.0",
+  "description": "\"\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
+    "build:ui": "rm -rf build && cd ../part2-notes/ && npm run build && cp -r build ../notes-backend",
+    "deploy": "flyctl deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "flyctl logs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaspereloranta/Full-stack-open.git"
+  },
+  "author": "Kasper Eloranta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kaspereloranta/Full-stack-open/issues"
+  },
+  "homepage": "https://github.com/Kaspereloranta/Full-stack-open#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
