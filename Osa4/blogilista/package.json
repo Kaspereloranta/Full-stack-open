@@ -26,7 +26,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "reduce": "^1.0.2"
   },
   "devDependencies": {
     "eslint": "^8.28.0",
