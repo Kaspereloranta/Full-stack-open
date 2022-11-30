@@ -21,10 +21,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
-    let Blogger = {
-        'author': String,
-        'blogs': Number 
-    }
+
     const author = (blog) => {
         return blog.author
     }
@@ -37,15 +34,43 @@ const mostBlogs = (blogs) => {
     const Blogg = groupedBlogsArray.reduce(function(prev, current) {
         return (prev[1] > current[1]) ? prev : current
     })
-    Blogger.author = Blogg[0]
-    Blogger.blogs = Blogg[1]
+
+    let Blogger = {
+        'author': Blogg[0],
+        'blogs': Blogg[1] 
+    }
 
     return Blogger
 }
+
+const mostLikes = (blogs) => {
+
+    const author = (blog) => {
+        return blog.author
+    }
+    const groupedBlogs = lodash.groupBy(blogs,author)
+
+    Object.keys(groupedBlogs).forEach(function(key){
+        groupedBlogs[key] = totalLikes(groupedBlogs[key])
+    })
+
+    const groupedBlogsArray = Object.entries(groupedBlogs)
+    const Blogg = groupedBlogsArray.reduce(function(prev, current) {
+        return (prev[1] > current[1]) ? prev : current
+    })
+
+    let Blogger = {
+        'author': Blogg[0],
+        'likes': Blogg[1] 
+    }
+    return Blogger
+}
+
 
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
