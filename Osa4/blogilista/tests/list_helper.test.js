@@ -65,3 +65,14 @@ describe('dummy and totalLikes',() => {
         expect(result).toBe(totalLikes)
     })
 })
+
+describe('favorite blog tests',() => {
+    test('favoriteBlogs returns the blog with most likes ', () => {
+        const favoriteBlog = blogs.reduce(function(prev,current){
+            return (prev.likes > current.likes ? prev : current)
+        })
+        
+        const result = listHelper.favoriteBlog(blogs)
+        expect(result).toEqual(favoriteBlog)
+    })
+})
