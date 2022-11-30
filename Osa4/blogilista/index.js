@@ -8,7 +8,7 @@ const config = require('./utils/config')
 const logger = require('./utils/logger')
 const Blog = require('./models/blog')
 */
-const express = require("express");
+const express = require('express')
 const app = require('./app') // varsinainen Express-sovellus
 const http = require('http')
 const config = require('./utils/config')
@@ -21,5 +21,5 @@ const Blog = require('./models/blog')
 const server = http.createServer(app)
 
 server.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`)
+    logger.info(`Server running on port ${config.PORT}`)
 })
