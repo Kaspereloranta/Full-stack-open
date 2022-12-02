@@ -12,19 +12,19 @@ describe('dummy and totalLikes',() => {
     
   test('totalLikes returns total likes', () => {
 
-    var totalLikes = helper.blogs.reduce(function(sum,blog) {return sum + blog.likes}, 0)
-    const result = listHelper.totalLikes(helper.blogs)
+    var totalLikes = helper.initialBlogs.reduce(function(sum,blog) {return sum + blog.likes}, 0)
+    const result = listHelper.totalLikes(helper.initialBlogs)
     expect(result).toBe(totalLikes)
   })
 })
 
 describe('favorite blog tests',() => {
   test('favoriteBlogs returns the blog with most likes ', () => {
-    const favoriteBlog = helper.blogs.reduce(function(prev,current){
+    const favoriteBlog = helper.initialBlogs.reduce(function(prev,current){
       return (prev.likes > current.likes ? prev : current)
     })
         
-    const result = listHelper.favoriteBlog(helper.blogs)
+    const result = listHelper.favoriteBlog(helper.initialBlogs)
     expect(result).toEqual(favoriteBlog)
   })
 })
@@ -37,7 +37,7 @@ describe('most blog tests',() => {
       'blogs': 3 
     }
 
-    const result = listHelper.mostBlogs(helper.blogs)
+    const result = listHelper.mostBlogs(helper.initialBlogs)
     expect(result).toEqual(Blogger)
   })
 })
@@ -50,7 +50,7 @@ describe('most likes tests',() => {
       'likes': 17
     }
 
-    const result = listHelper.mostLikes(helper.blogs)
+    const result = listHelper.mostLikes(helper.initialBlogs)
     expect(result).toEqual(Blogger)
   })
 })

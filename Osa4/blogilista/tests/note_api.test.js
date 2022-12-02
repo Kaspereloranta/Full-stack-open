@@ -8,7 +8,7 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(helper.blogs)
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 test('blogs are returned as json', async () => {
@@ -20,7 +20,7 @@ test('blogs are returned as json', async () => {
 
 test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.blogs.length)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
   
 test('a specific blog is within the returned blogs', async () => {
@@ -36,12 +36,10 @@ test('a specific blog is within the returned blogs', async () => {
 
 test('a valid blog can be added ', async () => {
   const newBlog = {
-    _id: '5a422a851b54a676234d17e1',
     title: 'Testauksen alkeet',
     author: 'Kasper Eloranta',
     url: 'https://testataan.fi/',
     likes: 9,
-    __v: 0
   }
   
   await api
@@ -51,7 +49,7 @@ test('a valid blog can be added ', async () => {
     .expect('Content-Type', /application\/json/)
   
   const blogsAtend = await helper.blogsInDb()
-  expect(blogsAtend).toHaveLength(helper.blogs.length + 1)
+  expect(blogsAtend).toHaveLength(helper.initialBlogs.length + 1)
 
   const contents = blogsAtend.map(n => n.title)
   expect(contents).toContain(
@@ -71,7 +69,7 @@ test('blog without author is not added', async () => {
 
   const blogsAtend = await helper.blogsInDb()
 
-  expect(blogsAtend).toHaveLength(helper.blogs.length)
+  expect(blogsAtend).toHaveLength(helper.initialBlogs.length)
 })
 
 test('a specific blog can be viewed', async () => {
@@ -99,7 +97,7 @@ test('a blog can be deleted', async () => {
   const blogsAtEnd = await helper.blogsInDb()
   
   expect(blogsAtEnd).toHaveLength(
-    helper.blogs.length - 1
+    helper.initialBlogs.length - 1
   )
   
   const contents = blogsAtEnd.map(r => r.title)
@@ -135,15 +133,15 @@ test('a blog with undefiend likes will be added with 0 likes ', async () => {
   const addedBlog = await blogsAtEnd.find(blog => blog.title === 'Testauksen alkeet')
   expect(addedBlog.likes).toBe(0)
 
-  expect(blogsAtEnd).toHaveLength(helper.blogs.length + 1)
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
 })
 
 test('adding a blog without title or url to db responses 400 bad request', async() => {
-    const newBlog = {
-        author: 'Kasper Eloranta',
-        likes: 9,
-    }
+  const newBlog = {
+    author: 'Kasper Eloranta',
+    likes: 9,
+  }
 
   await api
     .post('/api/blogs')
@@ -151,6 +149,38 @@ test('adding a blog without title or url to db responses 400 bad request', async
     .expect(400)
   
   const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(helper.blogs.length)
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 
+})
+
+test ('delete single blog', async() => {
+  const testBlog = {
+    title: 'Testauksen alkeet',
+    author: 'Kasper Eloranta',
+    url: 'https://testataan.fi/',
+    likes: 9,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtBeginning = await helper.blogsInDb()
+
+  const blogToDelete = blogsAtBeginning.filter(blog => blog.title == 'Testauksen alkeet')[0]
+
+  console.log(blogToDelete.id)
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+  const contents = blogsAtEnd.map(r => r.title)
+  expect(contents).not.toContain(blogToDelete.title)
+  
 })
