@@ -115,3 +115,25 @@ test('blogs include field id', async () => {
 afterAll(() => {
   mongoose.connection.close()
 })
+
+
+test('a blog with undefiend likes will be added with 0 likes ', async () => {
+  const newBlog = {
+    title: 'Testauksen alkeet',
+    author: 'Kasper Eloranta',
+    url: 'https://testataan.fi/',
+  }
+  
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  const addedBlog = await blogsAtEnd.find(blog => blog.title === 'Testauksen alkeet')
+  expect(addedBlog.likes).toBe(0)
+
+  expect(blogsAtEnd).toHaveLength(helper.blogs.length + 1)
+
+})
