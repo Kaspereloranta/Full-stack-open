@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const { response } = require('../app')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
@@ -135,5 +136,21 @@ test('a blog with undefiend likes will be added with 0 likes ', async () => {
   expect(addedBlog.likes).toBe(0)
 
   expect(blogsAtEnd).toHaveLength(helper.blogs.length + 1)
+
+})
+
+test('adding a blog without title or url to db responses 400 bad request', async() => {
+    const newBlog = {
+        author: 'Kasper Eloranta',
+        likes: 9,
+    }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.blogs.length)
 
 })
