@@ -171,8 +171,6 @@ test ('delete single blog', async() => {
 
   const blogToDelete = blogsAtBeginning.filter(blog => blog.title == 'Testauksen alkeet')[0]
 
-  console.log(blogToDelete.id)
-
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
     .expect(204)
@@ -183,4 +181,38 @@ test ('delete single blog', async() => {
   const contents = blogsAtEnd.map(r => r.title)
   expect(contents).not.toContain(blogToDelete.title)
   
+})
+
+test('update blog', async() => {
+  const testBlog = {
+    title: 'Testauksen alkeet',
+    author: 'Kasper Eloranta',
+    url: 'https://testataan.fi/',
+    likes: 9,
+  }
+ 
+  await api
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+      
+  const blogsAtBeginning = await helper.blogsInDb()
+  const blogToUpdate = blogsAtBeginning.filter(blog => blog.title == testBlog.title)[0]
+
+  const updatedBlog = {
+    ...blogToUpdate,
+    likes : blogToUpdate.likes + 1
+  }
+
+  await api
+    .put(`/api/blogs/${updatedBlog.id}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const foundBlog = blogsAtEnd.filter(blog => blog.title == testBlog.title)[0]
+  expect(foundBlog.likes).toBe(testBlog.likes +1)
+
 })
