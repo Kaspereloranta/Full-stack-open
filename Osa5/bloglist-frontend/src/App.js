@@ -7,6 +7,9 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -30,10 +33,12 @@ const App = () => {
     event.preventDefault()
     console.log('logging in with', username, password)
     try {
+      //const user = username
       const user = await loginService.login({username, password})
       setUser(user)
       setUsername('')
       setPassword('')
+      blogService.setToken(user.token)
       window.localStorage.setItem('logged user', JSON.stringify(user))
     } catch (exception) {
       setErrorMessage('Wrong credentials')
@@ -47,10 +52,10 @@ const App = () => {
     window.localStorage.clear()
   }
 
-
   const loginForm = () => (
     <form onSubmit={handleLogin}>
         <div>
+        <h1>log in to application</h1>
           username
           <input
           type="text"
@@ -71,6 +76,49 @@ const App = () => {
       </form>
   )
 
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <h2>Create a new blog</h2>
+
+      <div>title: <input
+      type="text"
+      value={blogTitle}
+      name="title"
+      onChange={({target}) => setBlogTitle(target.value)}
+      /></div>
+
+      <div>author: <input
+      type="text"
+      value={blogAuthor}
+      name="author"
+      onChange={({target}) => setBlogAuthor(target.value)}
+      /></div>
+
+      <div>url: <input
+      type="text"
+      value={blogUrl}
+      name="url"
+      onChange={({target}) => setBlogUrl(target.value)}
+      /></div>
+
+      <button type="submit">save blog</button>
+
+    </form>
+  )
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    const newBlog = {
+      title: blogTitle,
+      author: blogAuthor,
+      url: blogUrl
+    }
+    console.log(newBlog)
+    blogService.setToken(user.token)
+    blogService.create(newBlog).then(returnedBlog => {setBlogs(blogs.concat(returnedBlog))})
+  }
+
+
   const blogList = () => (
     <div>
       <h2>Blog list</h2>
@@ -82,15 +130,14 @@ const App = () => {
 
   return (
     <div>
-      <h1>log in to application</h1>
       <Notification message={errorMessage}></Notification>
       {user === null 
       ? loginForm()
       : 
       <div>
         <h1>Blogs</h1>
-        <p>{user.name} logged in</p>
-        <button type="button" onClick={handleClick}>logout</button>
+        <p>{user.name} logged in <button type="button" onClick={handleClick}>logout</button> </p>
+        {blogForm()}
         {blogList()}
         </div>}
         <Footer />
