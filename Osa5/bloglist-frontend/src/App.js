@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Footer from './components/Footer'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -17,6 +18,14 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('logged user')
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser)
+      setUser(user)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -25,11 +34,19 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      window.localStorage.setItem('logged user', JSON.stringify(user))
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {setErrorMessage(null)}, 5000)
     }
   }
+
+  const handleClick = (event) => {
+    event.preventDefault()
+    setUser(null)
+    window.localStorage.clear()
+  }
+
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -66,13 +83,14 @@ const App = () => {
   return (
     <div>
       <h1>log in to application</h1>
-
+      <Notification message={errorMessage}></Notification>
       {user === null 
       ? loginForm()
       : 
       <div>
         <h1>Blogs</h1>
         <p>{user.name} logged in</p>
+        <button type="button" onClick={handleClick}>logout</button>
         {blogList()}
         </div>}
         <Footer />
