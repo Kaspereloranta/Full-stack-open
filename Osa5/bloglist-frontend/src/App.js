@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,8 +13,10 @@ const App = () => {
   const [blogUrl, setBlogUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -40,14 +43,18 @@ const App = () => {
       setPassword('')
       blogService.setToken(user.token)
       window.localStorage.setItem('logged user', JSON.stringify(user))
+      setNotification(`${username} logged`)
+      setTimeout(() => {setNotification(null)}, 5000)
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {setErrorMessage(null)}, 5000)
+      setError('Wrong username or password')
+      setTimeout(() => {setError(null)}, 5000)
     }
   }
 
   const handleClick = (event) => {
     event.preventDefault()
+    setNotification(`${user.username} logged out`)
+    setTimeout(() => {setNotification(null)}, 3500)
     setUser(null)
     window.localStorage.clear()
   }
@@ -116,6 +123,8 @@ const App = () => {
     console.log(newBlog)
     blogService.setToken(user.token)
     blogService.create(newBlog).then(returnedBlog => {setBlogs(blogs.concat(returnedBlog))})
+    setNotification(`New blog ${newBlog.title} by ${newBlog.author} created`)
+    setTimeout(() => {setNotification(null)}, 3500)
   }
 
 
@@ -130,7 +139,9 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage}></Notification>
+      <Notification message={notification}></Notification>
+      <Error message={error}> </Error>
+      
       {user === null 
       ? loginForm()
       : 
