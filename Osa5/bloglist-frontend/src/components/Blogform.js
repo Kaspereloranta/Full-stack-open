@@ -1,24 +1,17 @@
 import { useState } from 'react' 
-import Notification from './Notification'
-import Error from './Error'
 
 const BlogForm = ({ createBlog }) => {
     const [blogTitle, setBlogTitle] = useState('')
     const [blogAuthor, setBlogAuthor] = useState('')
     const [blogUrl, setBlogUrl] = useState('')
-    const [notification, setNotification] = useState(null)
-    const [error, setError] = useState(null)
     
     const addBlog = (event) => {
-        console.log(blogTitle,blogAuthor,blogUrl)
         event.preventDefault()
         createBlog({
             title: blogTitle,
             author: blogAuthor,
             url: blogUrl
         })
-        blogService.setToken(user.token)
-        blogService.create(newBlog).then(returnedBlog => {setBlogs(blogs.concat(returnedBlog))})
         setBlogTitle('')
         setBlogAuthor('')
         setBlogUrl('')

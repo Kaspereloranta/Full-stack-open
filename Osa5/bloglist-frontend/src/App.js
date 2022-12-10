@@ -11,9 +11,6 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -84,43 +81,12 @@ const App = () => {
       </div>
     )
   }
-/*
-  const blogForm = () => {
 
-    const hideWhenVisible = { display: addBlogVisible ? 'none' : ''}
-    const showWhenVisible = { display: addBlogVisible ? '' : 'none'}
-
-    return (
-      <div>
-
-      <div style={hideWhenVisible}>
-        <button onClick={(() => setAddBlogVisible(true))}>new blog</button>
-      </div>
-
-      <div style={showWhenVisible}>
-      <AddBlog 
-      blogAdd={addBlog}
-      titleBlog={blogTitle}
-      authorBlog={blogAuthor}
-      urlBlog={blogUrl}
-      setTitleBlog={setBlogTitle}
-      setAuthorBlog={setBlogAuthor}
-      setUrlBlog={setBlogUrl}
-      />
-      <button onClick={(() => setAddBlogVisible(false))}>cancel</button>
-      </div>
-
-      </div>
-      )
-  }
-*/
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService.setToken(user.token)
     blogService.create(blogObject).then(returnedBlog => {setBlogs(blogs.concat(returnedBlog))})
-    const blogTitle = blogObject.title
-    const blogAuthor = blogObject.author
-    setNotification(`New blog ${blogTitle} by ${blogAuthor} created`)
+    setNotification(`New blog ${blogObject.title} by ${blogObject.author} created`)
     setTimeout(() => {setNotification(null)}, 3500)
   }
 
