@@ -19,9 +19,10 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then(blogs =>{
+      const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
+  })  
   }, [])
 
   useEffect(() => {
