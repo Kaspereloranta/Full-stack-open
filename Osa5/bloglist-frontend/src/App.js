@@ -11,6 +11,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [blogUser, setBlogUser] = useState({})
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -97,7 +98,7 @@ const App = () => {
     <div>
       <h2>Blog list</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogList={blogs} setBlogs={setBlogs}/>
+        <Blog key={blog.id} blog={blog} blogList={blogs} setBlogs={setBlogs} currentUser={user}/>
       )}
     </div>
   )
