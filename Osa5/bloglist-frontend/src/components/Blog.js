@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, toggleImportance, blogList, setBlogs, currentUser}) => {
+const Blog = ({ blog, toggleImportance, blogList, setBlogs, currentUser }) => {
 
   const [showDetails, setShowDetails] = useState(false)
 
@@ -35,7 +35,7 @@ const Blog = ({blog, toggleImportance, blogList, setBlogs, currentUser}) => {
 
   const remove = async (event) => {
     event.preventDefault()
-    if(window.confirm("Remove blog " + blog.title + " by " + blog.author))
+    if(window.confirm('Remove blog ' + blog.title + ' by ' + blog.author))
     {
       const blogs = await blogList
       blogService.setToken(currentUser.token)
@@ -45,15 +45,15 @@ const Blog = ({blog, toggleImportance, blogList, setBlogs, currentUser}) => {
   }
 
   return (
-  <li className="blog" style={blogStyle}>
-    {blog.title} by {blog.author} <button onClick={handleClick}>{showDetails ? 'hide' : 'view'}</button>
-    <div style={showWhenVisible}>
-      <p>{blog.url}</p>
-      <p>Likes {blog.likes} <button onClick={like}>like</button></p>
-      <p>{blog.user.name}</p>
-      {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
-    </div>
-  </li>
-)}
+    <li className="blog" style={blogStyle}>
+      {blog.title} by {blog.author} <button onClick={handleClick}>{showDetails ? 'hide' : 'view'}</button>
+      <div style={showWhenVisible}>
+        <p>{blog.url}</p>
+        <p>Likes {blog.likes} <button onClick={like}>like</button></p>
+        <p>{blog.user.name}</p>
+        {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
+      </div>
+    </li>
+  )}
 
 export default Blog

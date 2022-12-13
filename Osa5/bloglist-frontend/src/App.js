@@ -11,7 +11,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [blogUser, setBlogUser] = useState({})
+  //const [blogUser, setBlogUser] = useState({})
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -20,10 +20,10 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>{
+    blogService.getAll().then(blogs => {
       const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes)
       setBlogs(sortedBlogs)
-  })  
+    })
   }, [])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const App = () => {
     console.log('logging in with', username, password)
     try {
       //const user = username
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       setUser(user)
       setUsername('')
       setPassword('')
@@ -107,19 +107,19 @@ const App = () => {
     <div>
       <Notification message={notification}></Notification>
       <Error message={error}> </Error>
-      
-      {user === null 
-      ? loginForm()
-      : 
-      <div>
-        <h1>Blogs</h1>
-        <p>{user.name} logged in <button type="button" onClick={handleClick}>logout</button> </p>
-        <Togglable buttonLabel="new blog" ref = {blogFormRef}>
-          <BlogForm createBlog={addBlog} />
-        </Togglable> 
-        {blogList()}
+
+      {user === null
+        ? loginForm()
+        :
+        <div>
+          <h1>Blogs</h1>
+          <p>{user.name} logged in <button type="button" onClick={handleClick}>logout</button> </p>
+          <Togglable buttonLabel="new blog" ref = {blogFormRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {blogList()}
         </div>}
-        <Footer />
+      <Footer />
     </div>
   )
 }
