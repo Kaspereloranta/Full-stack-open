@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, toggleImportance, blogList, setBlogs, currentUser }) => {
+const Blog = ({ blog, blogList, setBlogs, currentUser }) => {
 
   const [showDetails, setShowDetails] = useState(false)
 
