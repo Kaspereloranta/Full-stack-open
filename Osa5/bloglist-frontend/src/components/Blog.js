@@ -57,3 +57,4 @@ const Blog = ({ blog, blogList, setBlogs, currentUser }) => {
   )}
 
 export default Blog
+// rivi 54         {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}

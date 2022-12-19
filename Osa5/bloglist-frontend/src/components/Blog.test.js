@@ -10,19 +10,23 @@ describe('Blog compontent tests',() => {
     author:'Kasper Eloranta',
     url:'https://testiblogi.com/',
     likes:9,
-    user: { username:'KasperE' }
+    user:{ name:'KasperE' }
   }
 
 
   let mockUpdateBlog = jest.fn()
   let mockDeleteBlog = jest.fn()
 
+
   test('title and author are rendered', () => {
     const component = render(
       <Blog blog={blog} updateBlog={mockUpdateBlog} deleteBlog={mockDeleteBlog} />
     )
     expect(component.container).toHaveTextContent(
-      'Testikäyttöön luotu Blogi - Kasper Eloranta'
+      'Testikäyttöön luotu Blogi'
+    )
+    expect(component.container).toHaveTextContent(
+      'Kasper Eloranta'
     )
   })
 
@@ -46,4 +50,21 @@ describe('Blog compontent tests',() => {
       'KasperE'
     )
   })
+
+  test('call event handler twice if the like button is clicked twice', async() => {
+    let likeMockHandler = jest.fn()
+    const component = render(
+      <Blog blog={blog} updateLikes={likeMockHandler}/>
+    )
+    const user = userEvent.setup()
+    const viewButton = component.getByText('view')
+    await user.click(viewButton)
+
+    const likeButton = component.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(likeMockHandler.mock.calls).toHaveLength(2)
+  })
+
 })
