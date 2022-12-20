@@ -32,11 +32,11 @@ describe('Blog app', function() {
       cy.get('.error').should('contain','Wrong username or password')
       cy.get('.error').and('have.css', 'color', 'rgb(255, 0, 0)')
       cy.get('.error').and('have.css', 'border-style', 'solid')
-      cy.get('html').should('not.contain', 'KasperE logged') 
+      cy.get('html').should('not.contain', 'KasperE logged')
     })
   })
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function(){
       cy.contains('log in').click()
       cy.get('#username').type('KasperE')
@@ -64,7 +64,7 @@ describe('Blog app', function() {
       cy.visit('http://localhost:3001')
 
       cy.contains('view').click()
-      cy.contains('Tykättävä blogi by Kasper Eloranta')
+      cy.contains('Tykättävä blogi - Kasper Eloranta')
       cy.contains('www.hyväblogi.fi')
       cy.contains('0')
       cy.get('#likebutton').click()
@@ -86,6 +86,56 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'a blog created by cypress')
       cy.get('html').should('not.contain', 'tekijä')
       cy.get('html').should('not.contain', 'url')
+    })
+
+
+    describe('and several blogs exist', function () {
+      beforeEach(function () {
+        cy.contains('new blog').click()
+        cy.get('#title').type('eka blogi')
+        cy.get('#author').type(' ekatekijiä')
+        cy.get('#url').type(' ekaurl')
+        cy.get('#submit-button').click()
+        cy.visit('http://localhost:3001')
+        cy.contains('new blog').click()
+        cy.get('#title').type('toka blogi')
+        cy.get('#author').type(' tokatekijiä')
+        cy.get('#url').type(' tokaurl')
+        cy.get('#submit-button').click()
+        cy.visit('http://localhost:3001')
+        cy.contains('new blog').click()
+        cy.get('#title').type('kolmas blogi')
+        cy.get('#author').type(' kolmastekijiä')
+        cy.get('#url').type(' kolmasurl')
+        cy.get('#submit-button').click()
+        cy.visit('http://localhost:3001')
+      })
+
+      it('one of those can be liked', function () {
+        cy.contains('kolmas blogi').parent().find('button').eq(0).click()
+        cy.contains('kolmas blogi').parent().find('button').eq(1).click()
+        cy.contains('1')
+      })
+
+      it('one of those can be deleted', function () {
+        cy.contains('toka blogi').parent().find('button').eq(0).click()
+        cy.contains('toka blogi').parent().find('button').eq(2).click()
+        cy.get('html').should('not.contain', 'toka blogi')
+      })
+
+      it('they are ordered by the number of likes in descending order', async function () {
+        cy.contains('kolmas blogi').parent().find('button').eq(0).click()
+        cy.contains('kolmas blogi').parent().find('button').eq(1).click().wait(500).click().wait(500)
+        cy.contains('kolmas blogi').parent().find('button').eq(0).click()
+
+        cy.contains('toka blogi').parent().find('button').eq(0).click()
+        cy.contains('toka blogi').parent().find('button').eq(1).click().wait(500).click().wait(500).click().wait(500)
+        cy.visit('http://localhost:3001')
+
+        cy.get('.blog').eq(0).should('contain', 'second blog')
+        cy.get('.blog').eq(1).should('contain', 'third blog')
+        cy.get('.blog').eq(2).should('contain', 'first blog')
+      })
     })
   })
 })

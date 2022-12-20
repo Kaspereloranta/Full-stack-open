@@ -45,15 +45,16 @@ const Blog = ({ blog, blogList, setBlogs, currentUser }) => {
   }
 
   return (
-    <li className="blog" style={blogStyle}>
-      {blog.title} by {blog.author} <button onClick={handleClick}>{showDetails ? 'hide' : 'view'}</button>
+    <div className="blog" style={blogStyle}>
+      <span className="title">{blog.title} - </span>
+      <span className="author">{blog.author}</span>{' '}
+      <button id='viewbutton' onClick={handleClick}>{showDetails ? 'hide' : 'view'}</button>
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>Likes {blog.likes} <button id='likebutton' onClick={like}>like</button></p>
-        <p>{blog.user.name}</p>
-        {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}      
+        <button onClick={remove}>remove</button>
       </div>
-    </li>
+    </div>
   )}
 
 export default Blog
