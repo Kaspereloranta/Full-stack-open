@@ -70,6 +70,23 @@ describe('Blog app', function() {
       cy.get('#likebutton').click()
       cy.contains('1')
     })
+
+    it('A blog can be created and deleted by user', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('a blog created by cypress')
+      cy.get('#author').type('tekijä')
+      cy.get('#url').type('url')
+      cy.get('#submit-button').click()
+      cy.contains('a blog created by cypress')
+      cy.visit('http://localhost:3001')
+      cy.contains('a blog created by cypress')
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.visit('http://localhost:3001')
+      cy.get('html').should('not.contain', 'a blog created by cypress')
+      cy.get('html').should('not.contain', 'tekijä')
+      cy.get('html').should('not.contain', 'url')
+    })
   })
 })
 
