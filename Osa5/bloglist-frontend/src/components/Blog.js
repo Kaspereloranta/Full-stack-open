@@ -49,12 +49,14 @@ const Blog = ({ blog, blogList, setBlogs, currentUser }) => {
       {blog.title} by {blog.author} <button onClick={handleClick}>{showDetails ? 'hide' : 'view'}</button>
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
-        <p>Likes {blog.likes} <button onClick={like}>like</button></p>
+        <p>Likes {blog.likes} <button id='likebutton' onClick={like}>like</button></p>
         <p>{blog.user.name}</p>
-        {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
+        {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}      
       </div>
     </li>
   )}
 
 export default Blog
-// rivi 54         {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
+// allaoleva otettu pois testejä varten
+// <p>{blog.user.name}</p>
+//rivi 54         {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
