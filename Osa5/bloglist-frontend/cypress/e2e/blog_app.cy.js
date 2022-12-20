@@ -35,4 +35,23 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'KasperE logged') 
     })
   })
+
+  describe.only('When logged in', function() {
+    beforeEach(function(){
+      cy.contains('log in').click()
+      cy.get('#username').type('KasperE')
+      cy.get('#password').type('test')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('a blog created by cypress')
+      cy.get('#author').type('tekijä')
+      cy.get('#url').type('url')
+      cy.get('#submit-button').click()
+      cy.contains('a blog created by cypress')
+    })
+  })
 })
+
