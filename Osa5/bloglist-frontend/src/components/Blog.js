@@ -51,6 +51,7 @@ const Blog = ({ blog, blogList, setBlogs, currentUser }) => {
         <p>{blog.url}</p>
         <p>Likes {blog.likes} <button onClick={like}>like</button></p>
         <p>{blog.user.name}</p>
+        {currentUser.username === blog.user.username ? <button onClick={remove}>remove</button> : ''}
       </div>
     </li>
   )}
